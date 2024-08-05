@@ -18,7 +18,7 @@ namespace BusinessLogicLayer
             return doctor;
         }
 
-        public async Task<Doctor> DeleteDoctorAsync(int id)
+        public async Task<Doctor> DeleteDoctorAsync(string id)
         {
             var doctor = await _context.Doctors.FindAsync(id);
             if (doctor == null) return null;
@@ -28,7 +28,7 @@ namespace BusinessLogicLayer
             return doctor;
         }
 
-        public async Task<Doctor> GetDoctorByIdAsync(int id)
+        public async Task<Doctor> GetDoctorByIdAsync(string id)
         {
             return await _context.Doctors.FindAsync(id);
         }
@@ -40,7 +40,7 @@ namespace BusinessLogicLayer
 
         public async Task<Doctor> UpdateDoctorAsync(Doctor doctor)
         {
-            var doctorToUpdate = await _context.Doctors.FindAsync(doctor.DoctorId);
+            var doctorToUpdate = await _context.Doctors.FindAsync(doctor.Id);
             if (doctorToUpdate == null) return null;
 
             doctorToUpdate.FirstName = doctor.FirstName;

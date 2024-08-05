@@ -5,9 +5,9 @@ namespace BusinessLogicLayer
     public interface IDoctorService
     {
         Task<List<Doctor>> GetDoctorsAsync();
-        Task<Doctor> GetDoctorByIdAsync(int id);
+        Task<Doctor> GetDoctorByIdAsync(string id);
         Task<Doctor> AddDoctorAsync(Doctor doctor);
         Task<Doctor> UpdateDoctorAsync(Doctor doctor);
-        Task<Doctor> DeleteDoctorAsync(int id);
+        Task<Doctor> DeleteDoctorAsync(string id);
     }
 }

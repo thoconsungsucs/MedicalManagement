@@ -8,7 +8,7 @@ namespace MedicalManagement.Controllers
         {
             return new DoctorDTOForGet
             {
-                DoctorId = doctor.DoctorId,
+                DoctorId = doctor.Id,
                 FirstName = doctor.FirstName,
                 LastName = doctor.LastName,
                 Specialty = doctor.Specialty,

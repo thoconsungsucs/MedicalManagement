@@ -24,7 +24,7 @@ namespace MedicalManagement.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetById(int id)
+        public async Task<IActionResult> GetById(string id)
         {
             var doctor = await _doctorService.GetDoctorByIdAsync(id);
             if (doctor == null) return NotFound();
@@ -36,7 +36,7 @@ namespace MedicalManagement.Controllers
         {
             var doctorModel = doctor.ToDoctor();
             await _doctorService.AddDoctorAsync(doctorModel);
-            return CreatedAtAction(nameof(GetById), new { id = doctorModel.DoctorId }, doctorModel.ToDoctorDTOForGet());
+            return CreatedAtAction(nameof(GetById), new { id = doctorModel.Id }, doctorModel.ToDoctorDTOForGet());
         }
 
         [HttpPut]
@@ -49,7 +49,7 @@ namespace MedicalManagement.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(string id)
         {
             var doctor = await _doctorService.DeleteDoctorAsync(id);
             if (doctor == null) return NotFound();
