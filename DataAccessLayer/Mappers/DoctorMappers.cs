@@ -26,7 +26,8 @@ public static class DoctorMappers
             Specialty = doctorDTOForPost.Specialty,
             Email = doctorDTOForPost.Email,
             Address = doctorDTOForPost.Address,
-            PhoneNumber = doctorDTOForPost.PhoneNumber
+            PhoneNumber = doctorDTOForPost.PhoneNumber,
+            UserName = doctorDTOForPost.Email
         };
     }
 

@@ -1,9 +1,11 @@
 ﻿using DataAccessLayer.Entities;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace DataAccessLayer.Data
 {
-    public class ApplicationDbContext : DbContext
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
@@ -21,17 +23,14 @@ namespace DataAccessLayer.Data
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<Doctor>().ToTable("Doctors");
             modelBuilder.Entity<Patient>().ToTable("Patients");
-            /*modelBuilder.Entity<Doctor>().HasData(
-                               new Doctor
-                               {
-                                   DoctorId = 1,
-                                   FirstName = "John",
-                                   LastName = "Doe",
-                                   Specialty = "General Practitioner",
-                                   Address = "123 Main St",
-                                   Email = "john@gmail.com",
-                                   PhoneNumber = "01234567"
-                               });*/
+
+            List<IdentityRole> identityRoles = new List<IdentityRole>
+            {
+                new IdentityRole { Name = "Admin", NormalizedName = "ADMIN" },
+                new IdentityRole { Name = "Doctor", NormalizedName = "DOCTOR" },
+                new IdentityRole { Name = "Patient", NormalizedName = "PATIENT" },
+            };
+            modelBuilder.Entity<IdentityRole>().HasData(identityRoles);
         }
     }
 }
