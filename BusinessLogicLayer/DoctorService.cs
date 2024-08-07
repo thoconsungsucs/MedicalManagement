@@ -1,5 +1,7 @@
 ﻿using DataAccessLayer.Data;
+using DataAccessLayer.DTOs.Doctor;
 using DataAccessLayer.Entities;
+using DataAccessLayer.Mappers;
 using Microsoft.EntityFrameworkCore;
 namespace BusinessLogicLayer
 {
@@ -11,8 +13,9 @@ namespace BusinessLogicLayer
             _context = context;
         }
 
-        public async Task<Doctor> AddDoctorAsync(Doctor doctor)
+        public async Task<Doctor> AddDoctorAsync(DoctorDTOForPost doctorDTO)
         {
+            var doctor = doctorDTO.ToDoctor();
             await _context.Doctors.AddAsync(doctor);
             await _context.SaveChangesAsync();
             return doctor;
@@ -28,27 +31,46 @@ namespace BusinessLogicLayer
             return doctor;
         }
 
-        public async Task<Doctor> GetDoctorByIdAsync(string id)
+        public async Task<DoctorDTOForGet> GetDoctorByIdAsync(string id)
         {
-            return await _context.Doctors.FindAsync(id);
+            return await _context.Doctors
+                .Where(d => d.Id == id)
+                .Select(d => new DoctorDTOForGet
+                {
+                    DoctorId = d.Id,
+                    FirstName = d.FirstName,
+                    LastName = d.LastName,
+                    Specialty = d.Specialty,
+                    Email = d.Email,
+                    PhoneNumber = d.PhoneNumber
+                }).FirstOrDefaultAsync();
         }
 
-        public async Task<List<Doctor>> GetDoctorsAsync()
+        public async Task<List<DoctorDTOForGet>> GetDoctorsAsync()
         {
-            return await _context.Doctors.ToListAsync();
+            return await _context.Doctors.Select(d => new DoctorDTOForGet
+            {
+                DoctorId = d.Id,
+                FirstName = d.FirstName,
+                LastName = d.LastName,
+                Specialty = d.Specialty,
+                Email = d.Email,
+                PhoneNumber = d.PhoneNumber
+            }).ToListAsync();
         }
 
-        public async Task<Doctor> UpdateDoctorAsync(Doctor doctor)
+        public async Task<Doctor> UpdateDoctorAsync(DoctorDTO doctorDTO)
         {
-            var doctorToUpdate = await _context.Doctors.FindAsync(doctor.Id);
+            var doctorToUpdate = await _context.Doctors.FindAsync(doctorDTO.DoctorId);
             if (doctorToUpdate == null) return null;
 
-            doctorToUpdate.FirstName = doctor.FirstName;
-            doctorToUpdate.LastName = doctor.LastName;
-            doctorToUpdate.Specialty = doctor.Specialty;
-            doctorToUpdate.Address = doctor.Address;
-            doctorToUpdate.Email = doctor.Email;
-            doctorToUpdate.PhoneNumber = doctor.PhoneNumber;
+            doctorToUpdate.FirstName = doctorDTO.FirstName;
+            doctorToUpdate.LastName = doctorDTO.LastName;
+            doctorToUpdate.Specialty = doctorDTO.Specialty;
+            doctorToUpdate.PhoneNumber = doctorDTO.Phone;
+            doctorToUpdate.Address = doctorDTO.Address;
+            doctorToUpdate.Email = doctorDTO.Email;
+            doctorToUpdate.PhoneNumber = doctorDTO.PhoneNumber;
 
             await _context.SaveChangesAsync();
             return doctorToUpdate;

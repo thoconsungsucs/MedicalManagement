@@ -1,6 +1,5 @@
 ﻿using BusinessLogicLayer;
 using DataAccessLayer.DTOs.Doctor;
-using DataAccessLayer.Entities;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MedicalManagement.Controllers
@@ -16,33 +15,32 @@ namespace MedicalManagement.Controllers
             _doctorService = doctorService;
         }
 
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<DoctorDTOForGet>>> GetAll()
-        {
-            var doctors = await _doctorService.GetDoctorsAsync();
-            return Ok(doctors.Select(d => d.ToDoctorDTOForGet()));
-        }
-
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(string id)
         {
             var doctor = await _doctorService.GetDoctorByIdAsync(id);
             if (doctor == null) return NotFound();
-            return Ok(doctor.ToDoctorDTOForGet());
+            return Ok(doctor);
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<DoctorDTO>>> GetAll()
+        {
+            var doctors = await _doctorService.GetDoctorsAsync();
+            return Ok(doctors);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] DoctorDTOForPost doctor)
+        public async Task<IActionResult> Post([FromBody] DoctorDTOForPost doctorDTO)
         {
-            var doctorModel = doctor.ToDoctor();
-            await _doctorService.AddDoctorAsync(doctorModel);
-            return CreatedAtAction(nameof(GetById), new { id = doctorModel.Id }, doctorModel.ToDoctorDTOForGet());
+            var doctor = await _doctorService.AddDoctorAsync(doctorDTO);
+            return CreatedAtAction(nameof(GetById), new { id = doctor.Id }, doctor);
         }
 
         [HttpPut]
-        public async Task<IActionResult> Put([FromBody] Doctor doctor)
+        public async Task<IActionResult> Put([FromBody] DoctorDTO doctorDTO)
         {
-            var doctorUpdated = await _doctorService.UpdateDoctorAsync(doctor);
+            var doctorUpdated = await _doctorService.UpdateDoctorAsync(doctorDTO);
 
             if (doctorUpdated == null) return NotFound();
             return NoContent();

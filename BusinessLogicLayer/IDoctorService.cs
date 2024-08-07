@@ -1,13 +1,13 @@
-﻿using DataAccessLayer.Entities;
-
+﻿using DataAccessLayer.DTOs.Doctor;
+using DataAccessLayer.Entities;
 namespace BusinessLogicLayer
 {
     public interface IDoctorService
     {
-        Task<List<Doctor>> GetDoctorsAsync();
-        Task<Doctor> GetDoctorByIdAsync(string id);
-        Task<Doctor> AddDoctorAsync(Doctor doctor);
-        Task<Doctor> UpdateDoctorAsync(Doctor doctor);
+        Task<List<DoctorDTOForGet>> GetDoctorsAsync();
+        Task<DoctorDTOForGet> GetDoctorByIdAsync(string id);
+        Task<Doctor> AddDoctorAsync(DoctorDTOForPost doctor);
+        Task<Doctor> UpdateDoctorAsync(DoctorDTO doctor);
         Task<Doctor> DeleteDoctorAsync(string id);
     }
 }
