@@ -11,7 +11,5 @@ namespace DataAccessLayer.Entities
         [Required]
         public string Specialty { get; set; }
         public string Address { get; set; }
-        [Required]
-        public string PhoneNumber { get; set; }
     }
 }

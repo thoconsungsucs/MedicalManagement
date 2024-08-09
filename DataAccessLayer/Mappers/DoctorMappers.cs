@@ -1,12 +1,13 @@
-﻿using DataAccessLayer.DTOs.Doctor;
+﻿using DataAccessLayer.DTOs.Account;
+using DataAccessLayer.DTOs.Doctor;
 using DataAccessLayer.Entities;
 namespace DataAccessLayer.Mappers;
 
 public static class DoctorMappers
 {
-    public static DoctorDTO ToDoctorDTOForGet(this Doctor doctor)
+    public static DoctorDTOForGet ToDoctorDTOForGet(this Doctor doctor)
     {
-        return new DoctorDTO
+        return new DoctorDTOForGet
         {
             DoctorId = doctor.Id,
             FirstName = doctor.FirstName,
@@ -17,7 +18,7 @@ public static class DoctorMappers
         };
     }
 
-    public static Doctor ToDoctor(this DoctorDTOForPost doctorDTOForPost)
+    public static Doctor ToDoctor(this DoctorRegistationDTO doctorDTOForPost)
     {
         return new Doctor
         {

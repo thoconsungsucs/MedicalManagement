@@ -1,9 +1,9 @@
-﻿using DataAccessLayer.Data;
+﻿using BusinessLogicLayer.IService;
+using DataAccessLayer.Data;
 using DataAccessLayer.DTOs.Doctor;
 using DataAccessLayer.Entities;
-using DataAccessLayer.Mappers;
 using Microsoft.EntityFrameworkCore;
-namespace BusinessLogicLayer
+namespace BusinessLogicLayer.Service
 {
     public class DoctorService : IDoctorService
     {
@@ -13,13 +13,13 @@ namespace BusinessLogicLayer
             _context = context;
         }
 
-        public async Task<Doctor> AddDoctorAsync(DoctorDTOForPost doctorDTO)
+        /*public async Task<Doctor> AddDoctorAsync(DoctorDTOForPost doctorDTO)
         {
             var doctor = doctorDTO.ToDoctor();
             await _context.Doctors.AddAsync(doctor);
             await _context.SaveChangesAsync();
             return doctor;
-        }
+        }*/
 
         public async Task<Doctor> DeleteDoctorAsync(string id)
         {
@@ -59,17 +59,17 @@ namespace BusinessLogicLayer
             }).ToListAsync();
         }
 
-        public async Task<Doctor> UpdateDoctorAsync(DoctorDTO doctorDTO)
+        public async Task<Doctor> UpdateDoctorAsync(string doctorId, DoctorDTO doctorDTO)
         {
-            var doctorToUpdate = await _context.Doctors.FindAsync(doctorDTO.DoctorId);
+            var doctorToUpdate = await _context.Doctors.FindAsync(doctorId);
             if (doctorToUpdate == null) return null;
 
             doctorToUpdate.FirstName = doctorDTO.FirstName;
             doctorToUpdate.LastName = doctorDTO.LastName;
             doctorToUpdate.Specialty = doctorDTO.Specialty;
-            doctorToUpdate.PhoneNumber = doctorDTO.Phone;
             doctorToUpdate.Address = doctorDTO.Address;
             doctorToUpdate.Email = doctorDTO.Email;
+            doctorToUpdate.UserName = doctorDTO.Email;
             doctorToUpdate.PhoneNumber = doctorDTO.PhoneNumber;
 
             await _context.SaveChangesAsync();

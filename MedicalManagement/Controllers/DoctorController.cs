@@ -1,5 +1,6 @@
-﻿using BusinessLogicLayer;
+﻿using BusinessLogicLayer.IService;
 using DataAccessLayer.DTOs.Doctor;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MedicalManagement.Controllers
@@ -24,23 +25,24 @@ namespace MedicalManagement.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult<IEnumerable<DoctorDTO>>> GetAll()
         {
             var doctors = await _doctorService.GetDoctorsAsync();
             return Ok(doctors);
         }
 
-        [HttpPost]
+        /*[HttpPost]
         public async Task<IActionResult> Post([FromBody] DoctorDTOForPost doctorDTO)
         {
             var doctor = await _doctorService.AddDoctorAsync(doctorDTO);
             return CreatedAtAction(nameof(GetById), new { id = doctor.Id }, doctor);
-        }
+        }*/
 
-        [HttpPut]
-        public async Task<IActionResult> Put([FromBody] DoctorDTO doctorDTO)
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Put(string id, [FromBody] DoctorDTO doctorDTO)
         {
-            var doctorUpdated = await _doctorService.UpdateDoctorAsync(doctorDTO);
+            var doctorUpdated = await _doctorService.UpdateDoctorAsync(id, doctorDTO);
 
             if (doctorUpdated == null) return NotFound();
             return NoContent();

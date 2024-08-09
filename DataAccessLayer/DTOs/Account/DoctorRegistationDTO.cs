@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace DataAccessLayer.DTOs.Doctor
+namespace DataAccessLayer.DTOs.Account
 {
-    public class DoctorDTOForPost
+    public class DoctorRegistationDTO
     {
         [Required]
         public string FirstName { get; set; }
